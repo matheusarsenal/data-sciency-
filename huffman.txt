@@ -1,0 +1,35 @@
+Algoritmo Codificação_Huffman(texto)
+    se texto for vazio então
+        retornar null
+ 
+    frequencias ← contar_frequencias(texto)
+    fila ← nova_fila_prioridade()
+    para cada (símbolo, freq) em frequencias faça
+        inserir(fila, novo_no(símbolo, freq))
+ 
+    enquanto tamanho(fila) > 1 faça
+        no1 ← remover_menor(fila)
+        no2 ← remover_menor(fila)
+        novo ← novo_no(None, no1.freq + no2.freq)
+        novo.esquerda ← no1
+        novo.direita ← no2
+        inserir(fila, novo)
+    fim_enquanto
+    raiz ← remover(fila)
+ 
+    tabela_codigos ← dicionário_vazio()
+    função gerar_codigos(no, código_atual)
+        se no.char ≠ None então
+            tabela_codigos[no.char] ← código_atual
+            retornar
+        gerar_codigos(no.esquerda, código_atual + "0")
+        gerar_codigos(no.direita, código_atual + "1")
+    fim_função
+ 
+    gerar_codigos(raiz, "")
+    texto_codificado ← ""
+    para cada caractere em texto faça
+        texto_codificado ← texto_codificado + tabela_codigos[caractere]
+ 
+    retornar texto_codificado, tabela_codigos
+FimAlgoritmo
